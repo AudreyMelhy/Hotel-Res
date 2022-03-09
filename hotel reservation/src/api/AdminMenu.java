@@ -18,15 +18,16 @@ public class AdminMenu {
     private static AdminResource adminResource = AdminResource.getInstance();
     private static HotelResource hotelResource = HotelResource.getINSTANCE();
 
-    public void start () {
+    public static void start () {
 
+        System.out.println("Welcome to the admin menu.");
         boolean keepRunning = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
 
             while (keepRunning){
                 try {
-
+                    System.out.println("Please choose from the following options to start:");;
                     System.out.println("1. See all Customers");
                     System.out.println("2. See all Rooms");
                     System.out.println("3. See all Reservations");
@@ -55,13 +56,10 @@ public class AdminMenu {
                         addARoom("scanner");
 
 
-                                    } else if (selection == 5) {
-                                        System.out.println("You're about to exit back to Main Menu!");
+                    } else if (selection == 5) {
+                        MainMenu.start();
 
-                                        MainMenu mainMenu = new MainMenu();
-                                        mainMenu.start();
-
-                                    } else {
+                    } else {
                         System.out.println("Please enter a number between 1 and 5");
                     }
 
