@@ -1,15 +1,13 @@
 package api;
 
+import model.Customer;
 import model.IRoom;
 import model.Room;
 import model.RoomType;
 import service.CustomerService;
 import service.ReservationService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class AdminMenu {
 
@@ -18,16 +16,17 @@ public class AdminMenu {
     private static AdminResource adminResource = AdminResource.getInstance();
     private static HotelResource hotelResource = HotelResource.getINSTANCE();
 
-    public static void start () {
+    public static void start() {
 
         System.out.println("Welcome to the admin menu.");
         boolean keepRunning = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
 
-            while (keepRunning){
+            while (keepRunning) {
                 try {
-                    System.out.println("Please choose from the following options to start:");;
+                    System.out.println("Please choose from the following options to start:");
+                    ;
                     System.out.println("1. See all Customers");
                     System.out.println("2. See all Rooms");
                     System.out.println("3. See all Reservations");
@@ -37,24 +36,51 @@ public class AdminMenu {
                     int selection = Integer.parseInt(scanner.nextLine());
 
                     if (selection == 1) {
-                        System.out.println("See all Customers");
-                        System.out.println(adminResource.getAllCustomers());
+                        System.out.println("Here are all the current customers:");
+                        System.out.println(" ");
+                        Collection<Customer> customerList = adminResource.getAllCustomers();
+                        System.out.println(" ");
 
-                        keepRunning = false;
+                        for (Customer c : customerList) {
+                            System.out.println("Customer Name: " + c.getFirstName() + " " + c.getLastName());
+                            System.out.println("Customer Email: " + " " + c.getEmail());
+                            System.out.println(" ");
+                        }
 
                     } else if (selection == 2) {
-                        System.out.println("See all Rooms");
-                        System.out.println(adminResource.getAllRooms());
-                        keepRunning = false;
+
+                        System.out.println("Here are all rooms in our Hotel:");
+                        Collection<IRoom> roomList = adminResource.getAllRooms();
+                        System.out.println(" ");
+
+                        for (IRoom r : roomList) {
+                            System.out.println("Room Number: " + r.getRoomNumber());
+                            System.out.println("Room Type: " + r.getRoomType());
+                            System.out.println("Price per night: $" + r.getRoomPrice());
+                            System.out.println(" ");
+                        }
+
 
                     } else if (selection == 3) {
-                        System.out.println("See all Reservations");
-                        keepRunning = false;
+
+                        System.out.println("Here are all the current reservations:");
+                        System.out.println(" ");
+                        adminResource.displayAllReservations();
 
                     } else if (selection == 4) {
-                        System.out.println("Add a Room");
-                        addARoom("scanner");
+                        System.out.println("Please enter the room number: ");
+                        String roomNumber = scanner.nextLine();
+                        System.out.println("Please enter the room price: ");
+                        Double roomPrice = Double.parseDouble(scanner.nextLine());
+                        System.out.println("Please choose the room type: Enter 1 for DOUBLE or 2 for SINGLE");
+                        RoomType roomType = RoomType.SINGLE;
+                        Integer roomChoice = Integer.parseInt(scanner.nextLine());
+                        if (roomChoice == 1) {
+                            roomType = RoomType.DOUBLE;
+                        }
 
+                        IRoom room = new Room(roomNumber, roomPrice, roomType);
+                        adminResource.addRoom(room);
 
                     } else if (selection == 5) {
                         MainMenu.start();
@@ -70,48 +96,7 @@ public class AdminMenu {
         }
     }
 
-    private static void addARoom(String input2) {
-        AdminResource adminResource = AdminResource.getInstance();
-        Scanner input = new Scanner(System.in) ;
-
-        String addRoom;
-        int type;
-
-        do {
-            RoomType roomType = null;
-            input.nextLine();
-            System.out.println("Enter room number");
-            String roomNumber = input.nextLine();
-            System.out.println("Enter price per night");
-            Double price = input.nextDouble();
-            do {
-                System.out.println("Enter room type:1 - single bed, 2- double bed");
-                type = input.nextInt();
-                if (type == 1) {
-                    roomType = RoomType.SINGLE;
-                } else if (type == 2) {
-                    roomType = RoomType.DOUBLE;
-                } else {
-                    System.out.println("Invalid Input");
-                }
-            } while (type != 1 && type != 2);
-
-            IRoom room = new Room(roomNumber, price, roomType);
-
-            Map<String, IRoom> roomsMap = new HashMap<>();
-            roomsMap.putIfAbsent(roomNumber, room);
-            adminResource.addRoom((List<IRoom>) adminResource.getAllRooms());
-
-            do {
-                System.out.println("Would you like to add another room? y/n");
-                addRoom = input.next().toLowerCase().trim();
-            } while (!addRoom.equals("y") && !addRoom.equals("n"));
-
-            } while (addRoom.equals("y"));
-
-
-        }
-    }
+}
 
 
 

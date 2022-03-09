@@ -16,7 +16,7 @@ public class ReservationService {
         return INSTANCE;
     }
 
-    public Map<String, List<Reservation>> reservationMap = new HashMap<>(); //String is customer email
+    public List<Reservation> reservationList = new ArrayList<>();
 
     public Map<String, IRoom> roomsMap = new HashMap<>();
 
@@ -49,6 +49,7 @@ public class ReservationService {
             }
             Reservation newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
             customer.getCustomerReservationList().add(newReservation);
+            reservationList.add(newReservation);
             reservedRoomsMap.get(room.getRoomNumber()).add(newReservation);
             reservedRoomsMap.put(room.getRoomNumber(), reservedRoomsMap.get(room.getRoomNumber()));
 
@@ -61,7 +62,7 @@ public class ReservationService {
 
             customer.getCustomerReservationList().add(newReservation);
             reservedRoomsMap.put(room.getRoomNumber(), customer.getCustomerReservationList());
-
+            reservationList.add(newReservation);
             return newReservation;
         }
 
@@ -80,8 +81,9 @@ public class ReservationService {
 
             }
 
-    public void printAllReservation() {
+    public List<Reservation> getAllReservation() {
 
+        return reservationList;
     }
 }
 

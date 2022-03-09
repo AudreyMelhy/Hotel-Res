@@ -52,33 +52,34 @@ public class MainMenu {
 
                         System.out.println("Please provide your checkInDate");
                         String inputDate = scanner.nextLine();
-                        // System.out.println(inputDate);
                         LocalDate checkInDate = LocalDate.parse(inputDate);
-                        // System.out.println(checkInDate);
 
                         System.out.println("Please provide checkOutDate");
 
                         String outputDate = scanner.nextLine();
-                        // System.out.println(outputDate);
                         LocalDate checkOutDate = LocalDate.parse(outputDate);
                         // System.out.println(checkOutDate);
 
                         IRoom room7 = new Room("233A", 170.50, DOUBLE);
-                        hotelResource.bookARoom(email, room7, checkInDate, checkOutDate);
+                        Reservation myReservation = hotelResource.bookARoom(email, room7, checkInDate, checkOutDate);
 
-                        System.out.println(" ");
-                        System.out.println("Your room has been reserved.");
-                        System.out.println("Your confirmation number is: PH" + rand.nextInt(10) + rand.nextInt(10) + rand.nextInt(10) + rand.nextInt(10));
-                        System.out.println("Your reservation details are:");
-                        System.out.println("Room Number: " + room7.getRoomNumber());
-                        System.out.println("Room Type: "+ room7.getRoomType());
-                        System.out.println("Price per night: $" + room7.getRoomPrice());
-                        System.out.println("Check in Date: " + checkInDate);
-                        System.out.println("Check out Date: " + checkOutDate);
-                        System.out.println("");
-                        System.out.println("Thank you for choosing Pacific Hotel. We look forward to seeing you during your stay with us.");
-                        System.out.println(" ");
-                        System.out.println("What would you like to do next?");
+                        if (myReservation == null){
+                            System.out.println("The room is booked at this time. Please change your booking time.");
+                        } else {
+                            System.out.println(" ");
+                            System.out.println("Your room has been reserved.");
+                            System.out.println("Your confirmation number is: PH" + rand.nextInt(10) + rand.nextInt(10) + rand.nextInt(10) + rand.nextInt(10));
+                            System.out.println("Your reservation details are:");
+                            System.out.println("Room Number: " + room7.getRoomNumber());
+                            System.out.println("Room Type: " + room7.getRoomType());
+                            System.out.println("Price per night: $" + room7.getRoomPrice());
+                            System.out.println("Check in Date: " + checkInDate);
+                            System.out.println("Check out Date: " + checkOutDate);
+                            System.out.println("");
+                            System.out.println("Thank you for choosing Pacific Hotel. We look forward to seeing you during your stay with us.");
+                            System.out.println(" ");
+                            System.out.println("What would you like to do next?");
+                        }
 
 
                     } else if (selection == 2) {
@@ -146,12 +147,14 @@ public class MainMenu {
                     } else if (selection == 5) {
                         System.out.println("You're about to exit, Good bye!");
                         keepRunning = false;
+                        return;
                     } else {
                         System.out.println("Please enter a number between 1 and 5");
                     }
 
                 } catch (Exception ex) {
                     System.out.println("\nError - Invalid Input\n");
+                    keepRunning = false;
                     // }
                 }
             }
