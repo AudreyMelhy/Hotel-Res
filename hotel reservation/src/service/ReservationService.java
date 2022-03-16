@@ -22,7 +22,7 @@ public class ReservationService {
 
     public Map<String, List<Reservation>> reservedRoomsMap = new HashMap<>();// String is roomID
 
-    public Map<String, IRoom> unavailableRoomsAccordingToDates=new HashMap<>();
+    public Map<String, IRoom> unavailableRoomsAccordingToDates = new HashMap<>();
 
 
     private static void displayCurrentLocalDate() {
@@ -40,7 +40,7 @@ public class ReservationService {
         return roomsMap.get(roomID);
     }
 
-    public Reservation reserveARoom (Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
+    public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
 
         if (reservedRoomsMap.containsKey(room.getRoomNumber())) {
             for (Reservation r1 : reservedRoomsMap.get(room.getRoomNumber())) {
@@ -69,7 +69,7 @@ public class ReservationService {
     }
 
 
-            public Collection<IRoom> findRooms (LocalDate checkInDate,LocalDate checkOutDate) {
+            public Collection<IRoom> findRooms(LocalDate checkInDate,LocalDate checkOutDate) {
                 return findRooms (checkInDate, checkOutDate);
             }
 
