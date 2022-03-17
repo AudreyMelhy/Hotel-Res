@@ -60,9 +60,9 @@ public class MainMenu {
                             LocalDate checkOutDate = LocalDate.parse(outputDate);
                             // System.out.println(checkOutDate);
 
-                            System.out.println("Here are the rooms that we have in our hotel: ");
+                            System.out.println("Here are the available rooms, base on your dates: ");
                             System.out.println(" ");
-                            for (IRoom room : reservationService.roomsMap.values()) {
+                            for (IRoom room : hotelResource.findARoom(checkInDate, checkOutDate)) {
                                 System.out.println("Room Number: " + room.getRoomNumber());
                                 System.out.println("Room Type: " + room.getRoomType());
                                 System.out.println("Price per night: " + room.getRoomPrice());
@@ -72,6 +72,7 @@ public class MainMenu {
                             System.out.println("Please enter your desired Room Number: ");
                             String roomNumberChosen = scanner.nextLine();
                             IRoom roomChosen = reservationService.roomsMap.get(roomNumberChosen);
+
 
                             Reservation myReservation = hotelResource.bookARoom(email, roomChosen, checkInDate, checkOutDate);
 
@@ -160,8 +161,9 @@ public class MainMenu {
                     }
 
                 } catch(Exception ex){
-                        System.out.println("\nError - Invalid Input\n");
-                        keepRunning = false;
+                        //System.out.println("\nError - Invalid Input\n");
+                    System.out.println(ex.getMessage());
+                    keepRunning = false;
 
                     }
                 }

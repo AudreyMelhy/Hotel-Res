@@ -22,8 +22,6 @@ public class ReservationService {
 
     public Map<String, List<Reservation>> reservedRoomsMap = new HashMap<>();// String is roomID
 
-    public Map<String, IRoom> unavailableRoomsAccordingToDates = new HashMap<>();
-
 
     private static void displayCurrentLocalDate() {
         Calendar calendar = Calendar.getInstance();
@@ -33,6 +31,7 @@ public class ReservationService {
 
 
     public void addRoom(IRoom room) {
+
         roomsMap.putIfAbsent(room.getRoomNumber(), room);
     }
 
@@ -69,17 +68,32 @@ public class ReservationService {
     }
 
 
-            public Collection<IRoom> findRooms(LocalDate checkInDate,LocalDate checkOutDate) {
-                return findRooms (checkInDate, checkOutDate);
+    public Collection<IRoom> findRooms(LocalDate checkInDate,LocalDate checkOutDate) {
+        List<IRoom> availableRooms = new ArrayList<>();
+        for (IRoom room : roomsMap.values()) {
+            if (!reservedRoomsMap.containsKey(room.getRoomNumber())) {
+                availableRooms.add(room);
+            } else {
+                for (Reservation res : reservedRoomsMap.get(room.getRoomNumber())) {
+                    if (checkInDate.compareTo(res.getCheckOutDate())>0) {
+                        availableRooms.add(room);
+                    }
+                }
             }
 
-            public Collection<Reservation> getCustomersReservation(Customer customer) {
+        }
+
+        return availableRooms;
+
+    }
+
+    public Collection<Reservation> getCustomersReservation(Customer customer) {
 
 
-               return customer.getCustomerReservationList();
+        return customer.getCustomerReservationList();
 
 
-            }
+    }
 
     public List<Reservation> getAllReservation() {
 
